@@ -1,17 +1,25 @@
-import React, { memo, useEffect } from "react";
+import { Image } from "antd";
+import React, { memo } from "react";
 
-import { useAppDispatch } from "@/store/redux-hooks";
-import { asyncGetPlayListDetailAction } from "@/store/module/common";
 import { DetailCardWrapper } from "./style";
 
-const DetailCard = memo(() => {
-    const dispatch = useAppDispatch();
+interface Props {
+    imgSrc: string;
+    RightContent: React.ReactNode;
+}
 
-    useEffect(() => {
-        dispatch(asyncGetPlayListDetailAction());
-    }, [dispatch]);
+const DetailCard = memo((props: Props) => {
+    const { imgSrc, RightContent } = props;
 
-    return <DetailCardWrapper>DetailCard</DetailCardWrapper>;
+    return (
+        <DetailCardWrapper>
+            <div className="detail-card-left">
+                <Image className="detail-img" src={imgSrc + "?param=200y200"} preview={false} />
+            </div>
+
+            <div className="detail-card-right">{RightContent}</div>
+        </DetailCardWrapper>
+    );
 });
 
 export default DetailCard;

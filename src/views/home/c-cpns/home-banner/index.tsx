@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { HomeBannerWrapper } from "./style";
 
-import { Banner } from "@/api/page/home/type";
+import { Banner } from "@/types/home";
 import { Image, Carousel } from "antd";
 
 interface Props {

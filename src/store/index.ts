@@ -1,10 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import homeReducer from "./module/home";
+import commonReducer from "./module/common";
+import SongListDetailReducer from "./module/song-list-detail";
 
 const store = configureStore({
     reducer: {
-        home: homeReducer
+        home: homeReducer,
+        common: commonReducer,
+        songListDetail: SongListDetailReducer
     }
 });
 

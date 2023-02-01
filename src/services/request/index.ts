@@ -1,13 +1,15 @@
 import axios from "axios";
-import type { AxiosInstance, AxiosRequestConfig } from "axios";
+import type { AxiosInstance } from "axios";
 import type {
     RequestConfig,
     RequestInterceptors,
     CancelRequestSource,
-    CustomAxiosResponse
+    CustomResponse
 } from "./type";
 
 class Request {
+    // 全局拦截器对象
+    static globalInterceptorsObj: RequestInterceptors;
     // axios 实例
     instance: AxiosInstance;
     // 拦截器对象
@@ -38,8 +40,14 @@ class Request {
 
         // 全局请求拦截
         this.instance.interceptors.request.use(
-            (res: AxiosRequestConfig) => res,
-            (err: any) => err
+            Request.globalInterceptorsObj?.requestInterceptors,
+            Request.globalInterceptorsObj?.requestInterceptorsCatch
+        );
+
+        // 全局响应拦截器保证最先执行
+        this.instance.interceptors.response.use(
+            Request.globalInterceptorsObj?.responseInterceptors,
+            Request.globalInterceptorsObj?.responseInterceptorsCatch
         );
 
         // 使用实例拦截器
@@ -50,15 +58,6 @@ class Request {
         this.instance.interceptors.response.use(
             this.interceptorsObj?.responseInterceptors,
             this.interceptorsObj?.responseInterceptorsCatch
-        );
-
-        // 全局响应拦截器保证最后执行
-        this.instance.interceptors.response.use(
-            // 因为我们接口的数据都在res.data下，所以我们直接返回res.data
-            (res) => {
-                return res;
-            },
-            (err: any) => err
         );
     }
     /**
@@ -84,7 +83,7 @@ class Request {
         sourceIndex !== -1 && this.cancelRequestSourceList?.splice(sourceIndex as number, 1);
     }
 
-    request<T>(config: RequestConfig): Promise<CustomAxiosResponse<T>> {
+    request<T>(config: RequestConfig): Promise<CustomResponse<T>> {
         return new Promise((resolve, reject) => {
             // 如果我们为单个请求设置拦截器，这里使用单个请求的拦截器
             if (config.interceptors?.requestInterceptors) {
@@ -102,7 +101,7 @@ class Request {
                 });
             }
             this.instance
-                .request<any, CustomAxiosResponse<T>>(config)
+                .request<any, CustomResponse<T>>(config)
                 .then((res) => {
                     // 如果我们为单个响应设置拦截器，这里使用单个响应的拦截器
                     if (config.interceptors?.responseInterceptors) {
@@ -141,19 +140,19 @@ class Request {
         });
     }
 
-    get<T>(config: RequestConfig): Promise<CustomAxiosResponse<T>> {
+    get<T>(config: RequestConfig): Promise<CustomResponse<T>> {
         return this.request<T>({ ...config, method: "GET" });
     }
 
-    post<T>(config: RequestConfig): Promise<CustomAxiosResponse<T>> {
+    post<T>(config: RequestConfig): Promise<CustomResponse<T>> {
         return this.request<T>({ ...config, method: "POST" });
     }
 
-    patch<T>(config: RequestConfig): Promise<CustomAxiosResponse<T>> {
+    patch<T>(config: RequestConfig): Promise<CustomResponse<T>> {
         return this.request<T>({ ...config, method: "PATCH" });
     }
 
-    delete<T>(config: RequestConfig): Promise<CustomAxiosResponse<T>> {
+    delete<T>(config: RequestConfig): Promise<CustomResponse<T>> {
         return this.request<T>({ ...config, method: "DELETE" });
     }
 }

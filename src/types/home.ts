@@ -1,3 +1,8 @@
+export interface HomeState {
+    bannerList: Banner[];
+    personalizedList: playlist[];
+}
+
 export type Banner = {
     imageUrl: string;
     targetId: number;
@@ -27,6 +32,7 @@ export type Banner = {
     bannerBizType: string;
 };
 
+// 歌单卡片
 export type playlist = {
     id: number;
     type: number;

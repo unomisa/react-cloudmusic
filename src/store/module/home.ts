@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getBanner, getPersonalizedList } from "@/api/page/home";
 
-import { HomeState } from "./type";
+import { HomeState } from "@/types/home";
 
 const initialState: HomeState = {
     bannerList: [],
@@ -24,6 +24,7 @@ const homeSlice = createSlice({
 // 在一个异步函数中请求home页面所需数据
 export const asyncFetchHomeDataAction = createAsyncThunk("asyncFetch", (payload, { dispatch }) => {
     getBanner().then((res) => {
+        console.log("res: ", res);
         dispatch(changeBannerListAction(res.banners));
     });
 

@@ -9,7 +9,7 @@ declare module "axios" {
         defaults: AxiosRequestConfig;
         interceptors: {
             request: AxiosInterceptorManager<AxiosRequestConfig>;
-            response: AxiosInterceptorManager<CustomAxiosResponse>;
+            response: AxiosInterceptorManager<AxiosResponse<CustomAxiosResponse>>;
         };
         request<T = any, R = AxiosResponse<T>>(config: AxiosRequestConfig): Promise<R>;
         get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;

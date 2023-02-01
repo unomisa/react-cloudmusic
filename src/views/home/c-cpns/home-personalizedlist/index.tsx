@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 
 import { HomePersonalizedListWrapper } from "./style";
-import { playlist } from "@/api/page/home/type";
+import { playlist } from "@/types/home";
 import PlayCard from "@/components/play-card";
 
 interface Props {

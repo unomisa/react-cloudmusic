@@ -11,8 +11,13 @@ const theme = {
         primaryColor: "#333333",
         secondaryColor: "#222222"
     },
+    link: {
+        normal: "#527fb0",
+        hover: "#7c83fd"
+    },
     gray: {
-        primary: "#a9a9a9"
+        primary: "#808080",
+        secondary: "#a0a0a0"
     },
     // 样式混入
     mixin: {

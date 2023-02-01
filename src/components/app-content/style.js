@@ -11,6 +11,6 @@ export const AppContentWrapper = styled.div`
         width: ${theme.size.contentWidth}px;
         margin: 0 auto;
         min-height: inherit;
-        overflow: hidden;
+        padding-top: 1px;
     }
 `;
