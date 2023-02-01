@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useState, useRef, useEffect } from "react";
 import { Avatar, Button, Collapse } from "antd";
 import CollapsePanel from "antd/es/collapse/CollapsePanel";
 import { PlayCircleFilled, CaretRightOutlined } from "@ant-design/icons";
@@ -18,8 +18,24 @@ interface Props {
 
 const DescCard = memo((props: Props) => {
     const { detail } = props;
+    // 简介区域
+    const collapsePanelRef = useRef();
+    // 简介未折叠
+    const collapsePanelCopyRef = useRef();
 
-    let [isCollapse, setIsCollapse] = useState(false); // 简介是否收缩
+    const [isCollapse, setIsCollapse] = useState(false); // 简介是否收缩
+
+    const [isShowArrow, setIsShowArrow] = useState(false);
+
+    // 计算是否需要显示箭头
+    useEffect(() => {
+        const collapsePanel = collapsePanelRef.current as Element;
+        const collapsePanelCopy = collapsePanelCopyRef.current as Element;
+        const collapsePanelWidth = collapsePanel.clientWidth;
+        const collapsePanelCopyWidth = collapsePanelCopy.clientWidth;
+
+        setIsShowArrow(collapsePanelCopyWidth > collapsePanelWidth);
+    }, [detail]);
 
     const creatorDetailHandle = () => {
         console.log("跳转用户信息");
@@ -91,21 +107,29 @@ const DescCard = memo((props: Props) => {
                 </div>
 
                 <div className="detail-desc">
-                    {/* <span>简介：</span> */}
-                    {/* <span className="detail-desc-content">{detail.description}</span> */}
+                    <span className="detail-desc-label">简介：</span>
 
-                    <Collapse
-                        bordered={false}
-                        expandIconPosition="end"
-                        ghost
-                        onChange={collapseChangeHandle}
-                        expandIcon={({ isActive }) => (
-                            <CaretRightOutlined rotate={isActive ? -90 : 90} />
-                        )}>
-                        <CollapsePanel header={"简介：" + detail.description} key="1">
-                            {/* <div className="detail-desc-content">{detail.description}</div> */}
-                        </CollapsePanel>
-                    </Collapse>
+                    <div className="detail-desc-content" ref={collapsePanelRef}>
+                        <Collapse
+                            bordered={false}
+                            expandIconPosition="end"
+                            ghost
+                            onChange={collapseChangeHandle}
+                            expandIcon={({ isActive }) => (
+                                <CaretRightOutlined rotate={isActive ? -90 : 90} />
+                            )}>
+                            <CollapsePanel
+                                header={detail.description}
+                                key="1"
+                                showArrow={isShowArrow}
+                                collapsible={isShowArrow ? "icon" : "disabled"}
+                            />
+                        </Collapse>
+
+                        <div className="detail-desc-copy" ref={collapsePanelCopyRef}>
+                            {detail.description}
+                        </div>
+                    </div>
                 </div>
             </div>
         </DescCardRightContentWrapper>

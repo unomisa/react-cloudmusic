@@ -9,6 +9,7 @@ interface RightContentProps {
 
 export const DescCardRightContentWrapper = styled.div<RightContentProps>`
     .detail-content {
+        overflow: hidden;
         font-size: 14px;
 
         > * {
@@ -85,20 +86,42 @@ export const DescCardRightContentWrapper = styled.div<RightContentProps>`
         }
 
         .detail-desc {
+            display: flex;
+
+            &-label {
+                flex: 0 0 auto;
+            }
+
+            &-content {
+                position: relative;
+                flex: 1;
+            }
+
+            &-copy {
+                position: absolute;
+                left: 0;
+                display: inline-block;
+                visibility: hidden;
+                white-space: nowrap;
+            }
+
+            .ant-collapse {
+                display: inline-block;
+                width: 100%;
+            }
+
             .ant-collapse-header {
                 padding: 0;
             }
 
             .ant-collapse-header-text {
+                transform: translateY(-3px);
+                color: ${theme.gray.primary};
                 ${(props) => theme.mixin.multilineEllipsis(props.isCollapse ? 9999 : 1)}
             }
 
-            .ant-collapse-content-box {
-                padding: 0;
-            }
-
-            &-content {
-                color: ${theme.gray.primary};
+            .ant-collapse-content {
+                display: none !important;
             }
         }
     }

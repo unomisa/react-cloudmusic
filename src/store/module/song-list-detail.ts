@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { SongListDetailState } from "@/types/song-list-detail";
+import { SongListDetailState, SongListAsyncPayload } from "@/types/song-list-detail";
 import { getPlayListDetail } from "@/api";
 
 const initialState: SongListDetailState = {
@@ -20,8 +20,10 @@ const SongListDetailSlice = createSlice({
 // 在一个异步函数中请求页面所需数据
 export const asyncGetPlayListDetailAction = createAsyncThunk(
     "asyncFetch",
-    (payload, { dispatch }) => {
-        getPlayListDetail(2544350).then((res) => {
+    (payload: SongListAsyncPayload, { dispatch }) => {
+        const { id } = payload;
+
+        getPlayListDetail(id).then((res) => {
             dispatch(changePlayListDetail(res.playlist));
         });
     }

@@ -4,6 +4,10 @@ export interface SongListDetailState {
     playListDetail: PlayListDetail;
 }
 
+export interface SongListAsyncPayload {
+    id: string | number;
+}
+
 export type PlayListDetail = {
     id: number;
     name: string; // 歌单名
