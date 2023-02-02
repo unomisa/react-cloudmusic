@@ -1,4 +1,4 @@
-import { User, Track, TrackId } from "@/types/common";
+import { Creator, Track, TrackId } from "@/types/common";
 
 export interface SongListDetailState {
     playListDetail: PlayListDetail;
@@ -22,7 +22,7 @@ export type PlayListDetail = {
     playCount: number; // 歌曲博放数量
     description: string; // 简介
     tags: string[]; // 标签
-    creator: User; // 创建者
+    creator: Creator; // 创建者
     tracks: Track[];
     trackIds: TrackId[];
     shareCount: number; // 分享数量

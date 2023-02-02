@@ -1,5 +1,8 @@
+import { User } from "./user";
+
 export interface CommonState {
     isLogin: boolean;
+    user: User;
 }
 
 // 头像详情
@@ -10,7 +13,7 @@ export type AvatarDetail = {
 };
 
 // 创建者
-export type User = {
+export type Creator = {
     defaultAvatar: boolean;
     province: number;
     authStatus: number;
@@ -28,7 +31,6 @@ export type User = {
     detailDescription: string;
     avatarImgId: number;
     backgroundImgId: number;
-    /** p1.music.126.net/6WOd8M2uPlfuu9TCiBCSMw==/109951163521987363.jpg", */
     backgroundUrl: string;
     authority: number;
     mutual: boolean;

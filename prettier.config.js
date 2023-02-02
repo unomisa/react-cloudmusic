@@ -39,5 +39,5 @@ module.exports = {
     htmlWhitespaceSensitivity: "ignore",
     bracketSameLine: true,
     // 不让prettier使用eslint的代码格式进行校验
-    eslintIntegration : false,
+    eslintIntegration: true
 };
