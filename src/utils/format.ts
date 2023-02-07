@@ -1,8 +1,16 @@
-export function formatCount(count) {
+export function formatCount(count: number) {
     if (count >= 100000) {
         return Math.floor(count / 10000) + "万";
     }
     return count;
+}
+
+export function formatDuration(duration: number) {
+    return dateFormat("mm:ss", new Date(duration));
+}
+
+export function formatImgUrl(src: string, size: number) {
+    return src + `?param=${size}y${size}`;
 }
 
 /**

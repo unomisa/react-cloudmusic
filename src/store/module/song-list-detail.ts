@@ -1,33 +1,41 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { SongListDetailState, SongListAsyncPayload } from "@/types/song-list-detail";
-import { getPlayListDetail } from "@/api";
+import { getPlayListDetail, getSongDetail } from "@/api";
+import { TrackId } from "@/types/common";
 
 const initialState: SongListDetailState = {
-    playListDetail: undefined
+    playListDetail: undefined,
+    trackList: undefined
 };
 
 const SongListDetailSlice = createSlice({
     name: "songListDetail",
     initialState,
     reducers: {
-        changePlayListDetail(state, { payload }) {
+        changePlayListDetailAction(state, { payload }) {
             state.playListDetail = payload;
+        },
+        changeTrackListAction(state, { payload }) {
+            state.trackList = payload;
         }
     }
 });
 
-// 在一个异步函数中请求页面所需数据
+// 请求歌单详情数据
 export const asyncGetPlayListDetailAction = createAsyncThunk(
     "asyncFetch",
-    (payload: SongListAsyncPayload, { dispatch }) => {
+    async (payload: SongListAsyncPayload, { dispatch }) => {
         const { id } = payload;
+        const detailRes = await getPlayListDetail(id);
+        dispatch(changePlayListDetailAction(detailRes.playlist));
 
-        getPlayListDetail(id).then((res) => {
-            dispatch(changePlayListDetail(res.playlist));
-        });
+        // 拼接歌曲id
+        const trackIds = detailRes.playlist.trackIds.map((track: TrackId) => track.id).join(",");
+        const trackUrlsRes = await getSongDetail(trackIds);
+        dispatch(changeTrackListAction(trackUrlsRes.songs));
     }
 );
 
-export const { changePlayListDetail } = SongListDetailSlice.actions;
+export const { changePlayListDetailAction, changeTrackListAction } = SongListDetailSlice.actions;
 export default SongListDetailSlice.reducer;

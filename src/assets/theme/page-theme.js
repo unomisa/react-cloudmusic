@@ -1,7 +1,8 @@
 const theme = {
     size: {
         headerHeight: 80,
-        contentWidth: 1200
+        contentWidth: 1200,
+        playBarHeight: 90
     },
     color: {
         primaryColor: "#d83993",

@@ -1,13 +1,12 @@
 import React, { memo, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { Modal, Tabs } from "antd";
-import { Provider } from "react-redux";
-import store from "@/store";
 
 import { loginTypes } from "./config";
 import { LoginWrapper } from "./style";
 import { useAppDispatch } from "@/store/redux-hooks";
 import { changeIsShowLoginAction, changeTabActiveKeyAction } from "@/store/module/login";
+import { useStore } from "@/hooks/use-store";
 
 interface Props {
     open: boolean;
@@ -46,11 +45,7 @@ const login = () => {
     const contentReact = createRoot(content);
 
     return (props: Props) => () => {
-        contentReact.render(
-            <Provider store={store}>
-                <Login {...props} />
-            </Provider>
-        ); // 将组件渲染至页面
+        contentReact.render(useStore(<Login {...props} />)); // 将组件渲染至页面
     };
 };
 

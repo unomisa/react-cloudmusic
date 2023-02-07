@@ -12,14 +12,6 @@ export function getUserDetail(uid: string) {
     });
 }
 
-// 获取账号信息
-export function getUserAccount() {
-    return request.get({
-        url: "/user/account",
-        params: {}
-    });
-}
-
 // 查看数量
 export function getUserSubcount() {
     return request.get({

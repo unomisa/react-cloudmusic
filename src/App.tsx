@@ -5,6 +5,7 @@ import Router from "./router/transformRoutes";
 import AppHeader from "./components/app-header";
 // import AppFooter from "./components/app-footer";
 import AppContent from "./components/app-content";
+import AppPlayBar from "./components/app-play-bar";
 
 import { asyncGetLoginStatusAction } from "@/store/module/common";
 
@@ -22,6 +23,7 @@ const App = memo(() => {
                 <Router />
             </AppContent>
             {/* <AppFooter /> */}
+            <AppPlayBar />
         </div>
     );
 });

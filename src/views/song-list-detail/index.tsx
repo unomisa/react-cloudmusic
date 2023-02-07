@@ -7,9 +7,13 @@ import GradientBg from "@/components/gradient-bg";
 import DescCard from "./c-cpns/desc-card";
 import { shallowEqual } from "react-redux";
 import { useParams } from "react-router-dom";
+import ListContent from "./c-cpns/list-content";
 
 const SongListDetail = memo(() => {
-    const { playListDetail } = useAppSelector((state) => state.songListDetail, shallowEqual);
+    const { playListDetail, trackList } = useAppSelector(
+        (state) => state.songListDetail,
+        shallowEqual
+    );
 
     const dispatch = useAppDispatch();
 
@@ -24,6 +28,7 @@ const SongListDetail = memo(() => {
             <GradientBg endColor="#ffd1ff" />
             <div className="page-content">
                 {playListDetail && <DescCard detail={playListDetail} />}
+                {trackList && <ListContent trackList={trackList} />}
             </div>
         </SongListDetailWrapper>
     );

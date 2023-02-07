@@ -10,7 +10,7 @@ import DetailCardBtnGroup from "@/components/detail-card/c-cpns/detail-card-btn-
 import { DescCardWrapper, DescCardRightContentWrapper } from "./style";
 import { PlayListDetail } from "@/types/song-list-detail";
 import { useLoginAuth } from "@/hooks/index";
-import { dateFormat } from "@/utils";
+import { dateFormat, formatCount } from "@/utils";
 
 interface Props {
     detail: PlayListDetail;
@@ -25,16 +25,19 @@ const DescCard = memo((props: Props) => {
 
     const [isCollapse, setIsCollapse] = useState(false); // 简介是否收缩
 
-    const [isShowArrow, setIsShowArrow] = useState(false);
+    const [isShowArrow, setIsShowArrow] = useState(false); // 是否显示箭头
 
     // 计算是否需要显示箭头
     useEffect(() => {
-        const collapsePanel = collapsePanelRef.current as Element;
-        const collapsePanelCopy = collapsePanelCopyRef.current as Element;
-        const collapsePanelWidth = collapsePanel.clientWidth;
-        const collapsePanelCopyWidth = collapsePanelCopy.clientWidth;
+        // 有简介时计算
+        if (detail.description) {
+            const collapsePanel = collapsePanelRef.current as Element;
+            const collapsePanelCopy = collapsePanelCopyRef.current as Element;
+            const collapsePanelWidth = collapsePanel.clientWidth;
+            const collapsePanelCopyWidth = collapsePanelCopy.clientWidth;
 
-        setIsShowArrow(collapsePanelCopyWidth > collapsePanelWidth);
+            setIsShowArrow(collapsePanelCopyWidth > collapsePanelWidth);
+        }
     }, [detail]);
 
     const creatorDetailHandle = () => {
@@ -90,47 +93,51 @@ const DescCard = memo((props: Props) => {
                     </Button>
                 </DetailCardBtnGroup>
 
-                <div className="detail-tags">
-                    标签：
-                    {detail.tags.map((tag) => {
-                        return (
-                            <span className="detail-tag" key={tag}>
-                                {tag}
-                            </span>
-                        );
-                    })}
-                </div>
+                {detail?.tags.length > 0 && (
+                    <div className="detail-tags">
+                        标签：
+                        {detail.tags.map((tag) => {
+                            return (
+                                <span className="detail-tag" key={tag}>
+                                    {tag}
+                                </span>
+                            );
+                        })}
+                    </div>
+                )}
 
                 <div className="detail-count">
                     <span>歌曲：{detail.trackCount}</span>
-                    <span>播放：{detail.playCount}</span>
+                    <span>播放：{formatCount(detail.playCount)}</span>
                 </div>
 
-                <div className="detail-desc">
-                    <span className="detail-desc-label">简介：</span>
+                {detail.description && (
+                    <div className="detail-desc">
+                        <span className="detail-desc-label">简介：</span>
 
-                    <div className="detail-desc-content" ref={collapsePanelRef}>
-                        <Collapse
-                            bordered={false}
-                            expandIconPosition="end"
-                            ghost
-                            onChange={collapseChangeHandle}
-                            expandIcon={({ isActive }) => (
-                                <CaretRightOutlined rotate={isActive ? -90 : 90} />
-                            )}>
-                            <CollapsePanel
-                                header={detail.description}
-                                key="1"
-                                showArrow={isShowArrow}
-                                collapsible={isShowArrow ? "icon" : "disabled"}
-                            />
-                        </Collapse>
+                        <div className="detail-desc-content" ref={collapsePanelRef}>
+                            <Collapse
+                                bordered={false}
+                                expandIconPosition="end"
+                                ghost
+                                onChange={collapseChangeHandle}
+                                expandIcon={({ isActive }) => (
+                                    <CaretRightOutlined rotate={isActive ? -90 : 90} />
+                                )}>
+                                <CollapsePanel
+                                    header={detail.description}
+                                    key="1"
+                                    showArrow={isShowArrow}
+                                    collapsible={isShowArrow ? "icon" : "disabled"}
+                                />
+                            </Collapse>
 
-                        <div className="detail-desc-copy" ref={collapsePanelCopyRef}>
-                            {detail.description}
+                            <div className="detail-desc-copy" ref={collapsePanelCopyRef}>
+                                {detail.description}
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
             </div>
         </DescCardRightContentWrapper>
     );

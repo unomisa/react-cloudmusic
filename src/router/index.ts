@@ -1,3 +1,5 @@
+import AlbumDetail from "@/views/album-detail";
+import ArtistDetail from "@/views/artist-detail";
 import Home from "@/views/home";
 import SongListDetail from "@/views/song-list-detail";
 
@@ -28,6 +30,20 @@ const vueRoutes: IVueRoute[] = [
             title: "歌单详情"
         },
         component: SongListDetail
+    },
+    {
+        path: "/artistdetail/:id",
+        meta: {
+            title: "歌手详情"
+        },
+        component: ArtistDetail
+    },
+    {
+        path: "/albumdetail/:id",
+        meta: {
+            title: "专辑详情"
+        },
+        component: AlbumDetail
     }
 ];
 

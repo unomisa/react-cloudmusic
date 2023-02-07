@@ -1,7 +1,8 @@
-import { Creator, Track, TrackId } from "@/types/common";
+import { Creator, TrackDetail, TrackId } from "@/types/common";
 
 export interface SongListDetailState {
     playListDetail: PlayListDetail;
+    trackList: TrackDetail[];
 }
 
 export interface SongListAsyncPayload {
@@ -23,7 +24,6 @@ export type PlayListDetail = {
     description: string; // 简介
     tags: string[]; // 标签
     creator: Creator; // 创建者
-    tracks: Track[];
     trackIds: TrackId[];
     shareCount: number; // 分享数量
     commentCount: number; // 评论数量
