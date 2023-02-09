@@ -30,15 +30,15 @@ const PlayBarBaseControl = memo(() => {
             <Row>
                 <Col span={8}></Col>
                 <Col span={8} className="control-center">
-                    <StepBackwardFilled style={{ fontSize: "28px" }} onClick={PrevHandle} />
+                    <StepBackwardFilled style={{ fontSize: "24px" }} onClick={PrevHandle} />
                     <div className="control-switch flex-center" onClick={switchHandle}>
                         {pause ? (
-                            <CaretRightFilled style={{ fontSize: "36px" }} />
+                            <CaretRightFilled style={{ fontSize: "30px" }} />
                         ) : (
-                            <PauseOutlined style={{ fontSize: "30px" }} />
+                            <PauseOutlined style={{ fontSize: "24px" }} />
                         )}
                     </div>
-                    <StepForwardFilled style={{ fontSize: "28px" }} onClick={nextHandle} />
+                    <StepForwardFilled style={{ fontSize: "24px" }} onClick={nextHandle} />
                 </Col>
                 <Col span={8}></Col>
             </Row>

@@ -1,14 +1,16 @@
 import React, { memo } from "react";
 
 import { PlayBarRightWrapper } from "./style";
-import { Song } from "@/types/common";
+import VolumeControl from "./c-cpns/volume-control";
+import PlayListTrigger from "./c-cpns/play-list-trigger";
 
-interface Props {
-    song: Song;
-}
-
-const PlayBarRight = memo(({ song }: Props) => {
-    return <PlayBarRightWrapper>PlayBarRight</PlayBarRightWrapper>;
+const PlayBarRight = memo(() => {
+    return (
+        <PlayBarRightWrapper>
+            <VolumeControl />
+            <PlayListTrigger />
+        </PlayBarRightWrapper>
+    );
 });
 
 export default PlayBarRight;

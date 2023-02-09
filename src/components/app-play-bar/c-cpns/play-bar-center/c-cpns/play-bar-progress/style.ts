@@ -6,11 +6,13 @@ export const PlayBarProgressWrapper = styled.div`
 
     .ant-slider {
         width: 500px;
+        margin-top: 0;
+        margin-bottom: 0;
     }
 
     .progress {
         &-slider {
-            margin: 0 5px;
+            margin: 0 8px;
         }
     }
 

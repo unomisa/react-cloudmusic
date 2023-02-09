@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { LoginState } from "@/types/login";
 import { getQRCodeStatus, getQRImg, getQRKey } from "@/api";
 import login from "@/components/login";
-import { RootState } from "../index";
+import { StoreState } from "../index";
 import { asyncGetLoginStatusAction } from "./common";
 
 const initialState: LoginState = {
@@ -43,7 +43,7 @@ export const asyncGetQRCodeStatusAction = createAsyncThunk(
         clearInterval(timer);
 
         timer = setInterval(async () => {
-            const state = getState() as RootState;
+            const state = getState() as StoreState;
             const { qrCode, isShowLogin, tabActiveKey } = state.login;
 
             if (!isShowLogin || tabActiveKey !== "1") clearInterval(timer); // 若登录框关闭或者活动tab不是二维码登录时，则停止查询状态

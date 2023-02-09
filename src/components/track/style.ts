@@ -34,11 +34,24 @@ export const TrackWrapper = styled.div`
                     line-height: 1.4;
                 }
             }
+
+            .ant-col-0 {
+                display: none !important;
+            }
+        }
+
+        &-play {
+            .track {
+                &-name {
+                    color: ${theme.color.primaryColor};
+                }
+            }
         }
 
         &-index {
-            margin-left: 12px;
             color: ${theme.gray.primary};
+            text-align: right;
+            width: 40px;
         }
 
         &-like {

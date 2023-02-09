@@ -6,6 +6,7 @@ export const AppContentWrapper = styled.div`
     width: 100%;
     padding-top: ${theme.size.headerHeight}px;
     min-height: 100vh;
+    overflow-x: hidden;
 
     .page-content {
         width: ${theme.size.contentWidth}px;

@@ -4,11 +4,14 @@ import { getLoginStatus, getSongUrl } from "@/api";
 
 import { getUserDetail } from "@/api/common/user";
 import { inform } from "@/config/antd";
+import { StoreState } from "..";
 
 const initialState: CommonState = {
     isLogin: false, // 是否登录
     user: undefined, // 用户信息
     playSong: undefined, // 当前播放歌曲
+    playSongUrl: "", // 播放歌曲url
+    playList: [], // 播放列表
     showPlayBar: false // 是否显示播放栏
 };
 
@@ -24,6 +27,12 @@ const CommonSlice = createSlice({
         },
         changePlaySongAction(state, { payload }) {
             state.playSong = payload;
+        },
+        changePlaySongUrlAction(state, { payload }) {
+            state.playSongUrl = payload;
+        },
+        changePlayListAction(state, { payload }) {
+            state.playList = payload;
         },
         changeShowPlayBarAction(state, { payload }) {
             state.showPlayBar = payload;
@@ -54,17 +63,21 @@ export const asyncGetLoginStatusAction = createAsyncThunk(
 // 设置当前播放歌曲
 export const asyncSetCurrentPlaySongAction = createAsyncThunk(
     "asyncFetch",
-    async (payload: { track: TrackDetail }, { dispatch, getState }) => {
-        const { track } = payload;
+    async (payload: { track: TrackDetail; trackList: TrackDetail[] }, { dispatch, getState }) => {
+        const { trackList, track } = payload;
 
+        const storeState = getState() as StoreState;
+
+        const { playSong } = storeState.common;
+
+        if (track.id === playSong?.id) return; // 相同歌曲直接跳出
+
+        dispatch(changePlaySongAction(track)); // 显示播放歌曲信息
         dispatch(changeShowPlayBarAction(true)); // 显示playBar
 
-        // 等待前先让其渲染
-        let song = { ...track, url: "" };
-        dispatch(changePlaySongAction(song)); // 保存
-        const res = await getSongUrl(track.id);
-        song = { ...track, url: res.data[0].url };
-        dispatch(changePlaySongAction(song)); // 保存
+        console.log("切换当前歌曲");
+        const res = await getSongUrl(track.id); // 获取歌曲url
+        dispatch(changePlaySongUrlAction(res.data[0].url));
     }
 );
 
@@ -72,6 +85,8 @@ export const {
     changeUserAction,
     changeIsLoginAction,
     changePlaySongAction,
+    changePlaySongUrlAction,
+    changePlayListAction,
     changeShowPlayBarAction
 } = CommonSlice.actions;
 export default CommonSlice.reducer;

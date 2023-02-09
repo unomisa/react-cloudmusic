@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useContext, useEffect, useRef } from "react";
 import { Col, Row } from "antd";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -8,33 +8,38 @@ import { TrackDetail } from "@/types/common";
 import { formatDuration } from "@/utils";
 import theme from "@/assets/theme/page-theme";
 import { Ar } from "@/types/common";
-import { useAppDispatch } from "@/store/redux-hooks";
+import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
 import { asyncSetCurrentPlaySongAction } from "@/store/module/common";
+import { TrackListContext } from "../track-list";
+import { shallowEqual } from "react-redux";
+import classNames from "classnames";
 
 interface Props {
     track: TrackDetail;
-    trackArea?: TrackArea;
     index: number;
-}
-
-interface TrackArea {
-    other: number;
-    name: number;
-    artist: number;
-    album: number;
-    duration: number;
-    extend: number;
+    isPlay: boolean;
+    other?: (track: TrackDetail, isPlay: boolean) => React.ReactNode;
+    getPlayTrackNode?: (trackNode: HTMLDivElement) => void;
+    addToPlayList?: (list: TrackDetail[]) => void;
 }
 
 const Track = memo((props: Props) => {
-    const {
-        index,
-        track,
-        trackArea = { other: 3, name: 6, artist: 7, album: 5, duration: 3, extend: 0 }
-    } = props;
+    const { index, track, other, getPlayTrackNode, isPlay, addToPlayList } = props;
+
+    const { trackArea, gutter, list: trackList } = useContext(TrackListContext);
+
+    const containerRef = useRef();
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+
+    console.log("track重新渲染");
+
+    useEffect(() => {
+        if (isPlay) {
+            getPlayTrackNode && getPlayTrackNode(containerRef.current);
+        }
+    }, [isPlay]);
 
     // 跳转歌手详情
     const goArtDetail = (art: Ar) => {
@@ -46,20 +51,34 @@ const Track = memo((props: Props) => {
         navigate("/albumdetail/" + track.al.id);
     };
 
+    // 播放歌曲，以及将当前列表传入
     const play = () => {
-        dispatch(asyncSetCurrentPlaySongAction({ track }));
+        dispatch(asyncSetCurrentPlaySongAction({ track, trackList }));
+        addToPlayList && addToPlayList(trackList);
     };
 
     return (
-        <TrackWrapper onDoubleClick={play}>
-            <Row gutter={20} className="track-content">
+        <TrackWrapper onDoubleClick={play} ref={containerRef}>
+            <Row
+                gutter={gutter}
+                className={classNames("track-content", {
+                    "track-play": isPlay
+                })}>
                 <Col span={trackArea.other}>
-                    <span className="track-index">{index < 9 ? "0" + (index + 1) : index + 1}</span>
+                    {other ? (
+                        other(track, isPlay)
+                    ) : (
+                        <>
+                            <span className="track-index">
+                                {index < 9 ? "0" + (index + 1) : index + 1}
+                            </span>
 
-                    <span className="track-like">
-                        <HeartOutlined style={{ color: theme.gray.primary }} />
-                        {/* <HeartFilled style={{ color: theme.color.primaryColor }} /> */}
-                    </span>
+                            <span className="track-like">
+                                <HeartOutlined style={{ color: theme.gray.primary }} />
+                                {/* <HeartFilled style={{ color: theme.color.primaryColor }} /> */}
+                            </span>
+                        </>
+                    )}
                 </Col>
 
                 <Col span={trackArea.name}>

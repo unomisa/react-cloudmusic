@@ -37,6 +37,7 @@ const PlayBarProgress = memo(() => {
         } else {
             // 加载下一首时清除定时器
             clearTimeout(timerRef.current);
+            setPercent(0);
             // console.log("播放下一首以清除progeress进度监听");
         }
 

@@ -3,7 +3,9 @@ import { User } from "./user";
 export interface CommonState {
     isLogin: boolean;
     user: User;
-    playSong: Song;
+    playSong: TrackDetail;
+    playSongUrl: string;
+    playList: TrackDetail[];
     showPlayBar: boolean;
 }
 
