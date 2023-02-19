@@ -2,11 +2,16 @@ import styled from "styled-components";
 
 import theme from "@/assets/theme/page-theme";
 
-export const AppContentWrapper = styled.div`
+interface Props {
+    showPlayBar: boolean;
+}
+
+export const AppContentWrapper = styled.div<Props>`
     width: 100%;
     padding-top: ${theme.size.headerHeight}px;
+    padding-bottom: ${(props) => (props.showPlayBar ? theme.size.playBarHeight + "px" : 0)};
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow: hidden;
 
     .page-content {
         width: ${theme.size.contentWidth}px;

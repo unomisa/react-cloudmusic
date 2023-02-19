@@ -1,39 +1,38 @@
 import React, { memo, useContext, useEffect, useRef } from "react";
 import { Col, Row } from "antd";
-import { HeartOutlined, HeartFilled } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { HeartOutlined, HeartFilled, CustomerServiceOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 import { TrackWrapper } from "./style";
 import { TrackDetail } from "@/types/common";
 import { formatDuration } from "@/utils";
 import theme from "@/assets/theme/page-theme";
-import { Ar } from "@/types/common";
-import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
+import { useAppDispatch } from "@/store/redux-hooks";
 import { asyncSetCurrentPlaySongAction } from "@/store/module/common";
 import { TrackListContext } from "../track-list";
-import { shallowEqual } from "react-redux";
 import classNames from "classnames";
+import LikeSong from "../like-song";
 
 interface Props {
     track: TrackDetail;
     index: number;
     isPlay: boolean;
+    isLike?: boolean;
     other?: (track: TrackDetail, isPlay: boolean) => React.ReactNode;
     getPlayTrackNode?: (trackNode: HTMLDivElement) => void;
     addToPlayList?: (list: TrackDetail[]) => void;
 }
 
 const Track = memo((props: Props) => {
-    const { index, track, other, getPlayTrackNode, isPlay, addToPlayList } = props;
+    const { index, track, other, getPlayTrackNode, isPlay, addToPlayList, isLike } = props;
 
     const { trackArea, gutter, list: trackList } = useContext(TrackListContext);
 
     const containerRef = useRef();
 
-    const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    console.log("track重新渲染");
+    console.log("track重新渲染", trackArea.album);
 
     useEffect(() => {
         if (isPlay) {
@@ -41,19 +40,9 @@ const Track = memo((props: Props) => {
         }
     }, [isPlay]);
 
-    // 跳转歌手详情
-    const goArtDetail = (art: Ar) => {
-        navigate("/artistdetail/" + art.id);
-    };
-
-    // 跳转专辑详情
-    const goAlbumDetail = () => {
-        navigate("/albumdetail/" + track.al.id);
-    };
-
     // 播放歌曲，以及将当前列表传入
     const play = () => {
-        dispatch(asyncSetCurrentPlaySongAction({ track, trackList }));
+        dispatch(asyncSetCurrentPlaySongAction({ track }));
         addToPlayList && addToPlayList(trackList);
     };
 
@@ -70,12 +59,16 @@ const Track = memo((props: Props) => {
                     ) : (
                         <>
                             <span className="track-index">
-                                {index < 9 ? "0" + (index + 1) : index + 1}
+                                {isPlay ? (
+                                    <CustomerServiceOutlined
+                                        style={{ color: theme.color.primaryColor }}
+                                    />
+                                ) : (
+                                    <>{index < 9 ? "0" + (index + 1) : index + 1}</>
+                                )}
                             </span>
-
                             <span className="track-like">
-                                <HeartOutlined style={{ color: theme.gray.primary }} />
-                                {/* <HeartFilled style={{ color: theme.color.primaryColor }} /> */}
+                                <LikeSong track={track} isLike={isLike} />
                             </span>
                         </>
                     )}
@@ -95,10 +88,8 @@ const Track = memo((props: Props) => {
                         {track.ar.map((arItem, index) => {
                             return (
                                 <span className="track-art" key={index}>
-                                    <span
-                                        className="track-art-name"
-                                        onClick={(e) => goArtDetail(arItem)}>
-                                        {arItem.name}
+                                    <span className="track-art-name">
+                                        <Link to={"/artistdetail/" + arItem.id}>{arItem.name}</Link>
                                     </span>
                                     {index !== track.ar.length - 1 && (
                                         <span className="track-art-gap">/</span>
@@ -110,8 +101,8 @@ const Track = memo((props: Props) => {
                 </Col>
 
                 <Col span={trackArea.album}>
-                    <div className="ellipsis track-album" onClick={goAlbumDetail}>
-                        {track.al.name}
+                    <div className="ellipsis track-album">
+                        <Link to={"/albumdetail/" + track.al.id}>{track.al.name}</Link>
                     </div>
                 </Col>
 

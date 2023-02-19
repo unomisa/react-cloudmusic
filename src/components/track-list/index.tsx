@@ -14,7 +14,7 @@ interface Props {
     showTitle?: boolean; // 是否显示区域标题
     gutter?: number; // 间隔
     getPlayTrackNode?: (trackNode: HTMLDivElement) => void; // 获取当前track节点
-    addToPlayList?: (list: TrackDetail[]) => void;
+    addToPlayList?: (list: TrackDetail[]) => void; // 添加至歌单
 }
 
 export interface TrackArea {
@@ -35,7 +35,7 @@ export const TrackListContext = createContext({
 
 const TrackList = memo((props: Props) => {
     const {
-        list,
+        list, // track 列表
         trackArea = { other: 3, name: 6, artist: 7, album: 5, duration: 3, extend: 0 },
         trackOther,
         showTitle = true,
@@ -44,7 +44,13 @@ const TrackList = memo((props: Props) => {
         addToPlayList
     } = props;
 
-    const { playSong } = useAppSelector((state) => state.common, shallowEqual);
+    const { playSong, likeSongSet } = useAppSelector(
+        (state) => ({
+            playSong: state.common.playSong,
+            likeSongSet: state.common.userAttach.likeSongSet
+        }),
+        shallowEqual
+    );
 
     console.log("trackList被渲染");
 
@@ -59,11 +65,13 @@ const TrackList = memo((props: Props) => {
                 {showTitle && <TrackListAreaTitle />}
                 {list.map((track, index) => {
                     const isPlay = track.id === playSong?.id;
+                    const isLike = likeSongSet?.has(track.id) ?? false;
 
                     return (
                         <Track
                             track={track}
                             isPlay={isPlay}
+                            isLike={isLike}
                             index={index}
                             key={track.id}
                             other={trackOther}

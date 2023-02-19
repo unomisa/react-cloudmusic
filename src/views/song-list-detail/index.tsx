@@ -1,7 +1,10 @@
 import React, { memo, useEffect } from "react";
 import { SongListDetailWrapper } from "./style";
 import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
-import { asyncGetPlayListDetailAction } from "@/store/module/song-list-detail";
+import {
+    asyncGetPlayListDetailAction,
+    songListDetailStateResetAction
+} from "@/store/module/song-list-detail";
 
 import GradientBg from "@/components/gradient-bg";
 import DescCard from "./c-cpns/desc-card";
@@ -11,23 +14,31 @@ import ListContent from "./c-cpns/list-content";
 
 const SongListDetail = memo(() => {
     const { playListDetail, trackList } = useAppSelector(
-        (state) => state.songListDetail,
+        (state) => ({
+            playListDetail: state.songListDetail.playListDetail,
+            trackList: state.songListDetail.trackList
+        }),
         shallowEqual
     );
 
     const dispatch = useAppDispatch();
 
     const { id } = useParams();
+    console.log("id: ", id);
 
     useEffect(() => {
         dispatch(asyncGetPlayListDetailAction({ id }));
-    }, [dispatch, id]);
+
+        return () => {
+            dispatch(songListDetailStateResetAction());
+        };
+    }, [id]);
 
     return (
         <SongListDetailWrapper>
             <GradientBg endColor="#ffd1ff" />
             <div className="page-content">
-                {playListDetail && <DescCard detail={playListDetail} />}
+                {playListDetail && <DescCard detail={playListDetail} trackList={trackList} />}
                 {trackList && <ListContent trackList={trackList} />}
             </div>
         </SongListDetailWrapper>

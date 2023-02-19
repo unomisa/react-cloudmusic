@@ -11,13 +11,17 @@ import { DescCardWrapper, DescCardRightContentWrapper } from "./style";
 import { PlayListDetail } from "@/types/song-list-detail";
 import { useLoginAuth } from "@/hooks/index";
 import { dateFormat, formatCount } from "@/utils";
+import { TrackDetail } from "@/types/common";
+import { useAppDispatch } from "@/store/redux-hooks";
+import { changePlayListAction, asyncSetCurrentPlaySongAction } from "@/store/module/common";
 
 interface Props {
     detail: PlayListDetail;
+    trackList: TrackDetail[];
 }
 
 const DescCard = memo((props: Props) => {
-    const { detail } = props;
+    const { detail, trackList } = props;
     // 简介区域
     const collapsePanelRef = useRef();
     // 简介未折叠
@@ -26,6 +30,8 @@ const DescCard = memo((props: Props) => {
     const [isCollapse, setIsCollapse] = useState(false); // 简介是否收缩
 
     const [isShowArrow, setIsShowArrow] = useState(false); // 是否显示箭头
+
+    const dispatch = useAppDispatch();
 
     // 计算是否需要显示箭头
     useEffect(() => {
@@ -52,7 +58,10 @@ const DescCard = memo((props: Props) => {
     );
 
     // 播放全部
-    const playAllHandle = () => {};
+    const playAllHandle = () => {
+        dispatch(changePlayListAction(trackList));
+        dispatch(asyncSetCurrentPlaySongAction({ track: trackList[0] }));
+    };
 
     // 简介收缩
     const collapseChangeHandle = (key: string | string[]) => {

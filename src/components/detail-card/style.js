@@ -19,6 +19,14 @@ export const DetailCardWrapper = styled.div`
         }
         &-right {
             flex: 1;
+
+            > * {
+                margin-top: 12px;
+            }
+
+            > *:first-child {
+                margin-top: 0;
+            }
         }
     }
 `;

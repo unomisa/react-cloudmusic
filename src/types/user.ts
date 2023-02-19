@@ -1,3 +1,5 @@
+import { Set } from "typescript";
+
 // 认证信息
 export type Identify = {
     imageUrl: string;
@@ -76,3 +78,7 @@ export type User = {
     listenSongs: number;
     profile: Profile;
 };
+
+export interface UserAttach {
+    likeSongSet: Set<number>;
+}

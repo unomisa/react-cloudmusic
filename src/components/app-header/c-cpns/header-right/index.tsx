@@ -3,16 +3,29 @@ import { Avatar, Button } from "antd";
 
 import { HeaderRightWrapper } from "./style";
 import login from "@/components/login";
-import { useAppSelector } from "@/store/redux-hooks";
+import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
 import { shallowEqual } from "react-redux";
+import { changeIsLoginAction } from "@/store/module/common";
 
 const HeaderRight = memo((props) => {
-    const { user, isLogin } = useAppSelector((state) => state.common, shallowEqual);
+    const { user, isLogin } = useAppSelector(
+        (state) => ({
+            user: state.common.user,
+            isLogin: state.common.isLogin
+        }),
+        shallowEqual
+    );
+
+    const dispatch = useAppDispatch();
+    const loginOut = () => {
+        dispatch(changeIsLoginAction(false));
+        console.log("退出登录");
+    };
 
     return (
         <HeaderRightWrapper>
             {isLogin ? (
-                <div className="user-info">
+                <div className="user-info" onClick={loginOut}>
                     <Avatar src={user.profile?.avatarUrl} size={48} />
                     <span className="user-name">{user.profile?.nickname}</span>
                 </div>

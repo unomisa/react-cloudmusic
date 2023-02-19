@@ -18,7 +18,7 @@ export const DetailCardTopWrapper = styled.div<Props>`
             font-size: 14px;
 
             &-text {
-                margin-left: 3px;
+                margin-left: 5px;
                 font-size: 13px;
             }
         }

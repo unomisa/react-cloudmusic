@@ -36,7 +36,10 @@ const theme = {
                 overflow: hidden;
                 -webkit-line-clamp: ${num};
             `;
-        }
+        },
+        border: `
+           border: 1px solid #f3f3f3;
+        `
     }
 };
 

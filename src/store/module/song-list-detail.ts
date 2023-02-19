@@ -5,8 +5,8 @@ import { getPlayListDetail, getSongDetail } from "@/api";
 import { TrackId } from "@/types/common";
 
 const initialState: SongListDetailState = {
-    playListDetail: undefined,
-    trackList: undefined
+    playListDetail: null,
+    trackList: []
 };
 
 const SongListDetailSlice = createSlice({
@@ -27,6 +27,7 @@ export const asyncGetPlayListDetailAction = createAsyncThunk(
     "asyncFetch",
     async (payload: SongListAsyncPayload, { dispatch }) => {
         const { id } = payload;
+
         const detailRes = await getPlayListDetail(id);
         dispatch(changePlayListDetailAction(detailRes.playlist));
 
@@ -34,6 +35,14 @@ export const asyncGetPlayListDetailAction = createAsyncThunk(
         const trackIds = detailRes.playlist.trackIds.map((track: TrackId) => track.id).join(",");
         const trackUrlsRes = await getSongDetail(trackIds);
         dispatch(changeTrackListAction(trackUrlsRes.songs));
+    }
+);
+
+export const songListDetailStateResetAction = createAsyncThunk(
+    "asyncFetch",
+    async (payload, { dispatch }) => {
+        dispatch(changePlayListDetailAction(null));
+        dispatch(changeTrackListAction([]));
     }
 );
 

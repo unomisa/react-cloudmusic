@@ -14,7 +14,12 @@ interface Props {
 }
 
 const PlayList = memo(({ open }: Props) => {
-    const { playList, playSong } = useAppSelector((state) => state.common, shallowEqual);
+    const { playList } = useAppSelector(
+        (state) => ({
+            playList: state.common.playList
+        }),
+        shallowEqual
+    );
 
     const playTrackRef = useRef<HTMLDivElement>();
 
@@ -27,9 +32,7 @@ const PlayList = memo(({ open }: Props) => {
     // 监听播放列表的改变调整滚动高度
     useEffect(() => {
         if (open) {
-            setTimeout(() => {
-                scrollToPlayTrack(playTrackRef.current);
-            }, 0);
+            playTrackRef.current && scrollToPlayTrack(playTrackRef.current);
         }
     }, [open]);
 
@@ -97,9 +100,9 @@ const PlayList = memo(({ open }: Props) => {
                             trackArea={useMemo(
                                 () => ({
                                     other: 2,
-                                    name: 12,
+                                    name: 11,
                                     artist: 7,
-                                    duration: 3,
+                                    duration: 4,
                                     album: 0,
                                     extend: 0
                                 }),

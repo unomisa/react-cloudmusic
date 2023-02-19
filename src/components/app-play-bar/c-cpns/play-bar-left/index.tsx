@@ -6,9 +6,20 @@ import LikeSong from "@/components/like-song";
 import { PlayBarLeftWrapper } from "./style";
 import { formatImgUrl } from "@/utils";
 import { playBarContext } from "../..";
+import { useAppSelector } from "@/store/redux-hooks";
+import { shallowEqual } from "react-redux";
 
 const PlayBarLeft = memo(() => {
+    const { likeSongSet } = useAppSelector(
+        (state) => ({
+            likeSongSet: state.common.userAttach.likeSongSet
+        }),
+        shallowEqual
+    );
+
     const { playSong } = useContext(playBarContext);
+
+    const isLike = likeSongSet.has(playSong.id);
 
     return (
         <PlayBarLeftWrapper>
@@ -24,7 +35,7 @@ const PlayBarLeft = memo(() => {
                 <div className="content-right-line1 ellipsis-line1">
                     <div className="song-name">{playSong.name}</div>
                     <div className="content-right-other">
-                        <LikeSong track={playSong} />
+                        <LikeSong track={playSong} isLike={isLike} />
                     </div>
                 </div>
                 <div className="song-art ellipsis-line1 ">

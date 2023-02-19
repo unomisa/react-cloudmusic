@@ -87,3 +87,62 @@ export function getUserPlaylist(uid, limit, offset) {
         }
     });
 }
+
+// 喜欢音乐
+export function likeSong(id: number | string, like: boolean) {
+    return request.get({
+        url: "/like",
+        params: {
+            id,
+            like
+        }
+    });
+}
+
+// 收藏歌手
+export function subArtist(id, t, timestamp) {
+    return request.get({
+        url: "/artist/sub",
+        params: {
+            id,
+            t,
+            timestamp: Date.now()
+        }
+    });
+}
+
+// 关注用户
+export function followUser(id, t, timestamp) {
+    return request.get({
+        url: "/follow",
+        params: {
+            id,
+            t,
+            timestamp: Date.now()
+        }
+    });
+}
+
+// 收藏歌单
+export function subPlaylist(id, t, timestamp = Date.now()) {
+    return request.get({
+        url: "/playlist/subscribe",
+        params: {
+            id,
+            t,
+            timestamp: Date.now()
+        }
+    });
+}
+
+// 收藏专辑
+export function subAlbum(id, t) {
+    return request.get({
+        url: "/album/sub",
+        params: {
+            id,
+            t,
+            timestamp: Date.now()
+        }
+    });
+}

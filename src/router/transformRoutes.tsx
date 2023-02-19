@@ -1,9 +1,9 @@
 import { Navigate, useRoutes } from "react-router-dom";
+import React, { memo } from "react";
+import type { RouteObject } from "react-router-dom";
+
 import vueRoutes, { IVueRoute } from ".";
 
-import React, { memo } from "react";
-
-import type { RouteObject } from "react-router-dom";
 import BeforeRoute from "./beforeRoute";
 
 // 将配置转换

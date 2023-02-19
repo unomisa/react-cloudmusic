@@ -41,6 +41,7 @@ export const PlayBarLeftWrapper = styled.div`
         &-art {
             color: ${theme.gray.primary};
             font-size: 14px;
+            line-height: 1.5;
 
             &-name {
                 cursor: pointer;

@@ -6,9 +6,13 @@ import { asyncFetchHomeDataAction } from "@/store/module/home";
 import { HomeWrapper } from "./style";
 import HomeBanner from "./c-cpns/home-banner";
 import HomePersonalizedList from "./c-cpns/home-personalizedlist";
+import HomeArtists from "./c-cpns/home-artists";
 
 const Home = memo(() => {
-    const { bannerList, personalizedList } = useAppSelector((state) => state.home, shallowEqual);
+    const { bannerList, personalizedList, hotArtists } = useAppSelector(
+        (state) => state.home,
+        shallowEqual
+    );
 
     const dispatch = useAppDispatch();
 
@@ -21,6 +25,7 @@ const Home = memo(() => {
             <div className="page-content">
                 <HomeBanner bannerList={bannerList} />
                 <HomePersonalizedList personalizedList={personalizedList} />
+                <HomeArtists artists={hotArtists} />
             </div>
         </HomeWrapper>
     );

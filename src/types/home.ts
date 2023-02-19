@@ -1,6 +1,9 @@
+import { Artist } from "./common";
+
 export interface HomeState {
     bannerList: Banner[];
     personalizedList: playlist[];
+    hotArtists: Artist[];
 }
 
 export type Banner = {

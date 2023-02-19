@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getBanner, getPersonalizedList } from "@/api/page/home";
+import { getBanner, getHotArtists, getPersonalizedList } from "@/api/page/home";
 
 import { HomeState } from "@/types/home";
 
 const initialState: HomeState = {
     bannerList: [],
-    personalizedList: []
+    personalizedList: [],
+    hotArtists: []
 };
 
 const homeSlice = createSlice({
@@ -17,6 +18,9 @@ const homeSlice = createSlice({
         },
         changePersonalizedListAction(state, { payload }) {
             state.personalizedList = payload;
+        },
+        changeHotArtistsAction(state, { payload }) {
+            state.hotArtists = payload;
         }
     }
 });
@@ -30,7 +34,12 @@ export const asyncFetchHomeDataAction = createAsyncThunk("asyncFetch", (payload,
     getPersonalizedList(15).then((res) => {
         dispatch(changePersonalizedListAction(res.result));
     });
+
+    getHotArtists(24).then((res) => {
+        dispatch(changeHotArtistsAction(res.artists));
+    });
 });
 
-export const { changeBannerListAction, changePersonalizedListAction } = homeSlice.actions;
+export const { changeBannerListAction, changePersonalizedListAction, changeHotArtistsAction } =
+    homeSlice.actions;
 export default homeSlice.reducer;

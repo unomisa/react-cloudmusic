@@ -13,6 +13,10 @@ export const TrackWrapper = styled.div`
         background-color: #f9f9f9;
     }
 
+    & a {
+        color: inherit;
+    }
+
     .ellipsis {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -55,7 +59,7 @@ export const TrackWrapper = styled.div`
         }
 
         &-like {
-            transform: translateY(1px);
+            transform: translateY(-1px);
             margin-left: 12px;
             cursor: pointer;
         }

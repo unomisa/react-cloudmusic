@@ -18,9 +18,15 @@ export const playBarContext = createContext({
 
 const AppPlayBar = memo(() => {
     const { showPlayBar, playSong, playSongUrl } = useAppSelector(
-        (state) => state.common,
+        (state) => ({
+            showPlayBar: state.common.showPlayBar,
+            playSong: state.common.playSong,
+            playSongUrl: state.common.playSongUrl
+        }),
         shallowEqual
     );
+
+    console.log("playbar重新渲染");
 
     const [loading, setLoading] = useState(true); // 歌曲是否正在加载
 

@@ -1,11 +1,13 @@
-import { User } from "./user";
+import { User, UserAttach } from "./user";
 
 export interface CommonState {
     isLogin: boolean;
     user: User;
+    userAttach: UserAttach;
     playSong: TrackDetail;
     playSongUrl: string;
     playList: TrackDetail[];
+    playIndex: number;
     showPlayBar: boolean;
 }
 
@@ -161,3 +163,31 @@ export interface TrackDetail {
 export interface Song extends TrackDetail {
     url: string;
 }
+
+// 歌手
+export type Artist = {
+    name: string;
+    id: number;
+    picId: number;
+    img1v1Id: number;
+    briefDesc: string;
+    picUrl: string;
+    img1v1Url: string;
+    albumSize: number;
+    alias: string[];
+    trans: string;
+    musicSize: number;
+    topicPerson: number;
+    showPrivateMsg?: any;
+    isSubed?: any;
+    accountId?: any;
+    picId_str: string;
+    img1v1Id_str: string;
+    transNames?: any;
+    followed: boolean;
+    mvSize?: any;
+    publishTime?: any;
+    identifyTag?: any;
+    alg?: any;
+    fansCount: number;
+};
